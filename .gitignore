@@ -5,3 +5,7 @@
 *.fq
 *.bam
 *.vcf.gz
+reference/*
+*.zip
+*.html
+*.bai
