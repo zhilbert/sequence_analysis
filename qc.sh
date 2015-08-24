@@ -18,3 +18,4 @@ fastqc --threads 4 `ls data/fastq/*`
 # bwa
 bwa mem -t 4 reference/WS245/WS245.fa.gz data/fastq/140314_I315_FCC3NFRACXX_L2_WHAIPI002516-13_1.fq.gz data/fastq/140314_I315_FCC3NFRACXX_L2_WHAIPI002516-13_2.fq.gz | \
 samtools sort -O bam -T MY10 -@ 4 - > data/bam/MY10.bam
+samtools index data/bam/MY10.bam
