@@ -34,3 +34,7 @@ snpeff eff -s data/snpeff/${STRAIN}_snpEff_summary.html -no-downstream -no-inter
 region_of_interest=IV:5464516-5561950
 VCF=data/vcf/${STRAIN}.vcf.gz
 bcftools view -r ${region_of_interest} ${VCF} | snpeff eff -s data/snpeff/${STRAIN}_roi_snpEff_summary.html WS241 > data/snpeff/${STRAIN}_roi.eff.vcf
+
+#convert vcf to tsv
+python snpeff2tsv.py {region} {vcf_file} {severity} > ${STRAIN}_severity.tsv
+cat data/snpeff/MY10.tsv <(cat data/snpeff/MY10.tsv | grep -v 'feature_id') | sort -k1,1 -k2,2n
