@@ -28,4 +28,9 @@ rm ${chrom_regions}
 #snpeff
 snpeff databases > databases.txt
 snpeff download WS241
-snpeff eff -no-downstream -no-intergenic -no-intron -no-upstream WS241 data/vcf/${STRAIN}.vcf.gz > ${STRAIN}.eff.vcf
+snpeff eff -s data/snpeff/${STRAIN}_snpEff_summary.html -no-downstream -no-intergenic -no-intron -no-upstream WS241 data/vcf/${STRAIN}.vcf.gz > data/snpeff/${STRAIN}.eff.vcf
+
+#run snpeff on region of interest
+region_of_interest=IV:5464516-5561950
+VCF=data/vcf/${STRAIN}.vcf.gz
+bcftools view -r ${region_of_interest} ${VCF} | snpeff eff -s data/snpeff/${STRAIN}_roi_snpEff_summary.html WS241 > data/snpeff/${STRAIN}_roi.eff.vcf
