@@ -16,3 +16,4 @@ reference/*
 *.vcf
 *.csi
 data/vcf/MY18/*
+*.tsv
