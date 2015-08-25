@@ -33,3 +33,4 @@ chrom_regions=`samtools view -H $BAM | grep "\@SQ" | sed 's/^.*SN://g' | cut -f 
 samtools view -H $BAM | grep "\@SQ" | sed 's/^.*SN://g' | cut -f 1 | xargs -I {} -n 1 -P 6 sh -c "samtools mpileup -BQ0 -uf $REF -r \"{}\" $BAM | bcftools call -O z -mv > data/vcf/\"{}\".$STRAIN.vcf.gz"
 bcftools concat -O z ${chrom_regions} > data/vcf/$STRAIN.vcf.gz
 bcftools index data/vcf/$STRAIN.vcf.gz
+rm ${chrom_regions}
