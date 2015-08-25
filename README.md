@@ -7,3 +7,5 @@ To Do
 * [ ] SNPEff
 * [ ] Plot distribution of variant effects
 * [ ] Compare MY10 w/ MMP WI for unique MY10 variants
+* [ ] Remove duplicates with picard
+* [ ] Add filters
