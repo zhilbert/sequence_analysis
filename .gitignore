@@ -9,3 +9,9 @@ reference/*
 *.zip
 *.html
 *.bai
+*.pdf
+*.png
+*.dat
+*.txt
+*.vcf
+*.csi
