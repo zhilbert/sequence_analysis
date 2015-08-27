@@ -6,6 +6,6 @@ To Do
 * [x] Plot distribution of variants
 * [x] SNPEff
 * [x] Plot distribution of variant effects
-* [ ] Compare MY10 w/ MMP WI for unique MY10 variants
-* [ ] Remove duplicates with picard
-* [ ] Add filters
+* [ ] Compare MY10 w/WI for unique MY10 variants
+* [x] Remove duplicates with picard
+* [x] Add filters

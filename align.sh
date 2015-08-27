@@ -19,6 +19,11 @@ picard MarkDuplicates \
         M=data/bam/${STRAIN}.duplicate_report.txt \
         VALIDATION_STRINGENCY=SILENT REMOVE_DUPLICATES=false
 
+#Find structural variants
+delly -g reference/WS245/WS245.fa -o data/sv/${STRAIN}.sv.vcf data/bam/${STRAIN}.bam
+bcftools view -O z data/sv/${STRAIN}.sv.vcf > data/sv/${STRAIN}.sv.vcf.gz
+bcftools index data/sv/${STRAIN}.sv.vcf.gz
+bcftools filter -O z --include '%FILTER=="PASS"' data/sv/${STRAIN}.sv.vcf.gz > data/sv/${STRAIN}.filtered.sv.vcf.gz
 
 # Variant calling v2
 REF=reference/WS245/WS245.fa.gz
@@ -49,3 +54,10 @@ snpeff eff -s data/snpeff/${STRAIN}_snpEff_summary.html -no-downstream -no-inter
 #convert vcf to tsv
 #python snpeff2tsv.py {region} {vcf_file} {severity} > ${STRAIN}_severity.tsv
 #cat data/snpeff/MY10.tsv <(cat data/snpeff/MY10.tsv | grep -v 'feature_id') | sort -k1,1 -k2,2n
+
+#merge MY10 with WI vcf and find unique MY10 SNPs in region
+bcftools merge -O z data/vcf/MY10.vcf.gz data/vcf/MY18.vcf.gz data/WI/20150731_WI_PASS.vcf.gz > merged.vcf.gz
+bcftools view --types snps data/WI/merged.vcf.gz IV:5464516-5561950  | \
+ awk '$10 ~ "1\/1.*" { print } $0 ~ "#" { print }' | \
+   bcftools filter --include 'INFO/AC == 4 && AN > 4' |\
+    bcftools query -f '[%CHROM\t%POS\t%SAMPLE\t%GT\n]'
