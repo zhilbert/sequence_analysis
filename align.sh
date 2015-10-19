@@ -47,17 +47,20 @@ plot-vcfstats -p data/vcf/${STRAIN}/ data/vcf/${STRAIN}.stats.txt
 snpeff eff -s data/snpeff/${STRAIN}_snpEff_summary.html -no-downstream -no-intergenic -no-intron -no-upstream WS241 data/vcf/${STRAIN}.vcf.gz > data/snpeff/${STRAIN}.eff.vcf
 
 #run snpeff on region of interest
-#region_of_interest=IV:5464516-5561950
-#VCF=data/vcf/${STRAIN}.vcf.gz
-#bcftools view -r ${region_of_interest} ${VCF} | snpeff eff -s data/snpeff/${STRAIN}_roi_snpEff_summary.html WS241 > data/snpeff/${STRAIN}_roi.eff.vcf
+region_of_interest=IV:5464516-5561950
+#region_of_interest=X:2144602-8455640
+VCF=data/vcf/${STRAIN}.vcf.gz
+bcftools view -r ${region_of_interest} ${VCF} | snpeff eff -s data/snpeff/${STRAIN}_roi_snpEff_summary.html WS241 > data/snpeff/${STRAIN}_roi.eff.vcf
 
 #convert vcf to tsv
 #python snpeff2tsv.py {region} {vcf_file} {severity} > ${STRAIN}_severity.tsv
 #cat data/snpeff/MY10.tsv <(cat data/snpeff/MY10.tsv | grep -v 'feature_id') | sort -k1,1 -k2,2n
 
 #merge MY10 with WI vcf and find unique MY10 SNPs in region
-bcftools merge -O z data/vcf/MY10.vcf.gz data/vcf/MY18.vcf.gz data/WI/20150731_WI_PASS.vcf.gz > merged.vcf.gz
-bcftools view --types snps data/WI/merged.vcf.gz IV:5464516-5561950  | \
- awk '$10 ~ "1\/1.*" { print } $0 ~ "#" { print }' | \
-   bcftools filter --include 'INFO/AC == 4 && AN > 4' |\
-    bcftools query -f '[%CHROM\t%POS\t%SAMPLE\t%GT\n]'
+#bcftools merge -O z data/vcf/MY10.vcf.gz data/vcf/MY18.vcf.gz data/WI/20150731_WI_PASS.vcf.gz > merged.vcf.gz
+#bcftools view --types snps data/WI/merged.vcf.gz IV:5464516-5561950  | \
+ #awk '$10 ~ "1\/1.*" { print } $0 ~ "#" { print }' | \
+   #bcftools filter --include 'INFO/AC == 4 && AN > 4' |\
+    #bcftools query -f '[%CHROM\t%POS\t%SAMPLE\t%GT\n]'
+
+bcftools query -f '[%CHROM\t%POS\t%SAMPLE\t%GT\n]' data/WI/merged.vcf.gz | grep '1/1' > data/WI/merged_variants.txt
