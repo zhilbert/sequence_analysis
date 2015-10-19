@@ -19,3 +19,7 @@ data/vcf/MY18/*
 *.tsv
 data/vcf/test/*
 data/vcf/MY10/*
+MY10.*
+test/*
+z*
+data/snpeff/*.txt
